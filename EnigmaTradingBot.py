@@ -12,7 +12,8 @@ class EnigmaTradingBot:
         self.bot_token = token
         self.updater = Updater(token=self.bot_token)
         self.dispatcher = self.updater.dispatcher
-        logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+        self.error_msg = "Please see correct usage in /start"
+        logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s', level=logging.INFO)
 
     def generate_handler(self, method):
         handler = CommandHandler(method, getattr(self, method), pass_args=True)
@@ -20,27 +21,31 @@ class EnigmaTradingBot:
 
     def initialize_bot(self):
         self.generate_handler('start')
-        self.generate_handler('hello')
         self.generate_handler('fetch')
         self.updater.start_polling()
 
     def start(self, bot, update, args):
-        bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
+        bot.send_message(chat_id=update.message.chat_id,
+                         text="Usage:\n"
+                              "/start - Usage Details\n"
+                              "/fetch - fetch <currency1> <currency2> ~ "
+                              "Get current trading rates of currency2 against currency1")
         logging.info('start')
-
-    def hello(self, bot, update, args):
-        bot.send_message(chat_id=update.message.chat_id, text="Hi! Wassup!")
-        logging.info('hello')
 
     def fetch(self, bot, update, args):
         url = "https://poloniex.com/public?command=returnTicker"
         all_currency = urllib2.urlopen(url)
         currency_in_json = json.loads(all_currency.read())
-        query = args[0].upper() + '_' + args[1].upper()
-        bot.send_message(chat_id=update.message.chat_id,
-                         text="Current : " + currency_in_json[query]['last'] + "\nHighest Bid : " + currency_in_json[query][
-                             'highestBid'] + "\nLowest Ask : " + currency_in_json[query]['lowestAsk'])
-        logging.info(query + ' details fetched successfully')
+        try:
+            query = args[0].upper() + '_' + args[1].upper()
+            bot.send_message(chat_id=update.message.chat_id,
+                             text="Current : " + currency_in_json[query]['last'] +
+                                  "\nHighest Bid : " + currency_in_json[query][
+                                 'highestBid'] + "\nLowest Ask : " + currency_in_json[query]['lowestAsk'])
+            logging.info(query + ' details fetched successfully')
+        except (KeyError, IndexError) as e:
+            bot.send_message(chat_id=update.message.chat_id, text=self.error_msg)
+            logging.error(e)
 
 
 if __name__ == '__main__':
