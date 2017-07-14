@@ -1,8 +1,8 @@
-import ConfigParser
+import configparser
 import json
 import logging
-import urllib2
 
+from urllib.request import urlopen
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
@@ -34,7 +34,7 @@ class EnigmaTradingBot:
 
     def fetch(self, bot, update, args):
         url = "https://poloniex.com/public?command=returnTicker"
-        all_currency = urllib2.urlopen(url)
+        all_currency = urlopen(url)
         currency_in_json = json.loads(all_currency.read())
         try:
             query = args[0].upper() + '_' + args[1].upper()
@@ -49,7 +49,7 @@ class EnigmaTradingBot:
 
 
 if __name__ == '__main__':
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('conf.cfg')
     enigma_bot = EnigmaTradingBot(config.get('TELEGRAM', 'BOT_TOKEN'))
     enigma_bot.initialize_bot()
