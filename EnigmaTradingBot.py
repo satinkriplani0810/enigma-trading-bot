@@ -4,7 +4,7 @@ import logging
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-from Bittrex import Bittrex
+from exchanges.Bittrex import Bittrex
 
 
 class EnigmaTradingBot:
