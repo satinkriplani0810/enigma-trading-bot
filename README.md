@@ -10,8 +10,10 @@ Telegram Url: https://t.me/EnigmaTradingBot
 2. Install dependencies
 
     `pip3 install -r requirements.txt`
+
+3. Rename "conf.cfg.sample" to "conf.cfg" and update your telegram bot token.
  
-3. Run
+4. Run
 
     `python3 EngimaTradingBot.py`
 
