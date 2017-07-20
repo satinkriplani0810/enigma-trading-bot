@@ -1,10 +1,19 @@
-###Enigma Trading Bot
+##**Enigma Trading Bot**##
 
-Located at [https://t.me/enigma_trading_bot]
+Telegram Url: https://t.me/EnigmaTradingBot
 
-####Pre-Requisites
-```$ pip install python-telegram-bot --upgrade```
+####**Installation**
+1. Clone the repository
 
-####Usage
-* /start - Usage Details
-* /fetch - fetch <currency1> <currency2> ~ Get current trading rates of currency2 against currency1
+  `git clone https://github.com/satinkriplani0810/enigma-trading-bot.git`
+
+2. Install dependencies
+  `pip3 install -r requirements.txt`
+ 
+3. Run
+  `python3 EngimaTradingBot.py`
+
+####**Usage**
+
+`/start`: Usage Details
+`/ticker btc eth`: Return market ticker
